@@ -12,7 +12,7 @@ $ terraform apply
 Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
-module "aci_scaffolding" {
+module "aci_qos_policy" {
   source  = "netascode/qos-policy/aci"
   version = ">= 0.0.1"
 

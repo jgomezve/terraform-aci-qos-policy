@@ -11,7 +11,7 @@ Location in GUI:
 ## Examples
 
 ```hcl
-module "aci_scaffolding" {
+module "aci_qos_policy" {
   source  = "netascode/qos-policy/aci"
   version = ">= 0.0.1"
 
