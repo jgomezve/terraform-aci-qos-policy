@@ -1,5 +1,5 @@
 variable "name" {
-  description = "Tenant name."
+  description = "QoS Policy name."
   type        = string
 
   validation {
@@ -9,7 +9,7 @@ variable "name" {
 }
 
 variable "alias" {
-  description = "Tenant alias."
+  description = "QoS Policy alias."
   type        = string
   default     = ""
 
@@ -20,12 +20,110 @@ variable "alias" {
 }
 
 variable "description" {
-  description = "Tenant description."
+  description = "QoS Policy description."
   type        = string
   default     = ""
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9\\!#$%()*,-./:;@ _{|}~?&+]{0,128}$", var.description))
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `\\`, `!`, `#`, `$`, `%`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `@`, ` `, `_`, `{`, `|`, }`, `~`, `?`, `&`, `+`. Maximum characters: 128."
+  }
+}
+
+variable "tenant" {
+  description = "QoS Custom Policy's Tenant name"
+  type        = string
+}
+
+variable "dscp_priority_maps" {
+  description = "QoS Policy DSCP Priority Maps."
+  type = list(object({
+    dscp_from   = string
+    dscp_to     = string
+    priority    = optional(string)
+    dscp_target = optional(string)
+    cos_target  = optional(string)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for pm in var.dscp_priority_maps : pm.dscp_from == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_from), false)
+    ])
+    error_message = "`dscp_from`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
+  }
+  validation {
+    condition = alltrue([
+      for pm in var.dscp_priority_maps : pm.dscp_to == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_to), false)
+    ])
+    error_message = "`dscp_to`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
+  }
+
+  validation {
+    condition = alltrue([
+      for pm in var.dscp_priority_maps : pm.priority == null || try(contains(["unspecified", "level1", "level2", "level3", "level4", "level5", "level6", ], pm.priority), false)
+    ])
+    error_message = "`dscp_to`: Allowed values are `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or `level6`"
+  }
+
+  validation {
+    condition = alltrue([
+      for pm in var.dscp_priority_maps : pm.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_target), false)
+    ])
+    error_message = "`dscp_target`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
+  }
+
+  validation {
+    condition = alltrue([
+      for pm in var.dscp_priority_maps : pm.cos_target == null || try(pm.cos_target >= 0 && pm.cos_target <= 7, false)
+    ])
+    error_message = "`cos_target`: Minimum value: `0`. Maximum value: `7`."
+  }
+}
+
+variable "dot1p_classifiers" {
+  description = "QoS Policy DSCP Priority Maps."
+  type = list(object({
+    dot1p_from  = string
+    dot1p_to    = string
+    priority    = optional(string)
+    dscp_target = optional(string)
+    cos_target  = optional(string)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for dot1p in var.dot1p_classifiers : dot1p.dot1p_from == null || try(dot1p.dot1p_from >= 0 && dot1p.dot1p_from <= 7, false)
+    ])
+    error_message = "`dot1p_from`: Minimum value: `0`. Maximum value: `7`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dot1p in var.dot1p_classifiers : dot1p.dot1p_to == null || try(dot1p.dot1p_to >= 0 && dot1p.dot1p_to <= 7, false)
+    ])
+    error_message = "`dot1p_to`: Minimum value: `0`. Maximum value: `7`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dot1p in var.dot1p_classifiers : dot1p.priority == null || try(contains(["unspecified", "level1", "level2", "level3", "level4", "level5", "level6", ], dot1p.priority), false)
+    ])
+    error_message = "`dscp_to`: Allowed values are `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or `level6`"
+  }
+
+  validation {
+    condition = alltrue([
+      for dot1p in var.dot1p_classifiers : dot1p.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], dot1p.dscp_target), false)
+    ])
+    error_message = "`dscp_target`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
+  }
+
+  validation {
+    condition = alltrue([
+      for dot1p in var.dot1p_classifiers : dot1p.cos_target == null || try(dot1p.cos_target >= 0 && dot1p.cos_target <= 7, false)
+    ])
+    error_message = "`cos_target`: Minimum value: `0`. Maximum value: `7`."
   }
 }

@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 1.0.0"
   required_providers {
     test = {
       source = "terraform.io/builtin/test"
@@ -13,34 +14,34 @@ terraform {
 
 module "main" {
   source = "../.."
-
-  name = "ABC"
+  name   = "MIN_POL"
+  tenant = "TEN1"
 }
 
-data "aci_rest_managed" "fvTenant" {
-  dn = "uni/tn-ABC"
+data "aci_rest_managed" "qosCustomPol" {
+  dn = "uni/tn-TEN1/qoscustom-MIN_POL"
 
   depends_on = [module.main]
 }
 
-resource "test_assertions" "fvTenant" {
-  component = "fvTenant"
+resource "test_assertions" "qosCustomPol" {
+  component = "qosCustomPol"
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest_managed.fvTenant.content.name
-    want        = "ABC"
-  }
-
-  equal "nameAlias" {
-    description = "nameAlias"
-    got         = data.aci_rest_managed.fvTenant.content.nameAlias
-    want        = ""
+    got         = data.aci_rest_managed.qosCustomPol.content.name
+    want        = "MIN_POL"
   }
 
   equal "descr" {
     description = "descr"
-    got         = data.aci_rest_managed.fvTenant.content.descr
+    got         = data.aci_rest_managed.qosCustomPol.content.descr
+    want        = ""
+  }
+
+  equal "nameAlias" {
+    description = "nameAlias"
+    got         = data.aci_rest_managed.qosCustomPol.content.nameAlias
     want        = ""
   }
 }
