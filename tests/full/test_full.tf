@@ -32,7 +32,7 @@ module "main" {
       dot1p_from  = 3
       dot1p_to    = 4
       priority    = "level5"
-      dscp_target = "CS0"
+      dscp_target = 32
       cos_target  = 5
     }
   ]
@@ -130,7 +130,7 @@ resource "test_assertions" "qosDot1PClass" {
   equal "target" {
     description = "target"
     got         = data.aci_rest_managed.qosDot1PClass.content.target
-    want        = "CS0"
+    want        = "CS4"
   }
 
   equal "targetCos" {

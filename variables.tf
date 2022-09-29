@@ -48,13 +48,13 @@ variable "dscp_priority_maps" {
 
   validation {
     condition = alltrue([
-      for pm in var.dscp_priority_maps : pm.dscp_from == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_from), false)
+      for pm in var.dscp_priority_maps : pm.dscp_from == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_from), false) || try(pm.cos_target >= 0 && pm.cos_target <= 63, false)
     ])
     error_message = "`dscp_from`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
   }
   validation {
     condition = alltrue([
-      for pm in var.dscp_priority_maps : pm.dscp_to == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_to), false)
+      for pm in var.dscp_priority_maps : pm.dscp_to == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_to), false) || try(pm.cos_target >= 0 && pm.cos_target <= 63, false)
     ])
     error_message = "`dscp_to`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
   }
@@ -68,7 +68,7 @@ variable "dscp_priority_maps" {
 
   validation {
     condition = alltrue([
-      for pm in var.dscp_priority_maps : pm.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_target), false)
+      for pm in var.dscp_priority_maps : pm.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], pm.dscp_target), false) || try(pm.cos_target >= 0 && pm.cos_target <= 63, false)
     ])
     error_message = "`dscp_target`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
   }
@@ -94,14 +94,14 @@ variable "dot1p_classifiers" {
 
   validation {
     condition = alltrue([
-      for dot1p in var.dot1p_classifiers : dot1p.dot1p_from == null || try(dot1p.dot1p_from >= 0 && dot1p.dot1p_from <= 7, false)
+      for dot1p in var.dot1p_classifiers : dot1p.dot1p_from == null || try(dot1p.dot1p_from >= 0 && dot1p.dot1p_from <= 7, false) || dot1p.dot1p_from == "unspecified" 
     ])
     error_message = "`dot1p_from`: Minimum value: `0`. Maximum value: `7`."
   }
 
   validation {
     condition = alltrue([
-      for dot1p in var.dot1p_classifiers : dot1p.dot1p_to == null || try(dot1p.dot1p_to >= 0 && dot1p.dot1p_to <= 7, false)
+      for dot1p in var.dot1p_classifiers : dot1p.dot1p_to == null || try(dot1p.dot1p_to >= 0 && dot1p.dot1p_to <= 7, false) || dot1p.dot1p_to == "unspecified" 
     ])
     error_message = "`dot1p_to`: Minimum value: `0`. Maximum value: `7`."
   }
@@ -115,7 +115,7 @@ variable "dot1p_classifiers" {
 
   validation {
     condition = alltrue([
-      for dot1p in var.dot1p_classifiers : dot1p.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], dot1p.dscp_target), false)
+      for dot1p in var.dot1p_classifiers : dot1p.dscp_target == null || try(contains(["unspecified", "CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS4", "AF41", "AF42", "AF43", "CS5", "VA", "EF", "CS6", "CS7"], dot1p.dscp_target), false) || try(dot1p.dscp_target >= 0 && dot1p.dscp_target <= 63, false)
     ])
     error_message = "`dscp_target`: Allowed values are `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`."
   }
