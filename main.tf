@@ -14,9 +14,9 @@ resource "aci_rest_managed" "qosDscpClass" {
   class_name = "qosDscpClass"
   content = {
     from      = each.value.dscp_from
-    prio      = each.value.priority == null ? "level3" : each.value.priority
-    target    = each.value.dscp_target == null ? "unspecified" : each.value.dscp_target
-    targetCos = each.value.cos_target == null ? "unspecified" : each.value.cos_target
+    prio      = each.value.priority
+    target    = each.value.dscp_target
+    targetCos = each.value.cos_target
     to        = each.value.dscp_to
   }
 }
@@ -27,9 +27,9 @@ resource "aci_rest_managed" "qosDot1PClass" {
   class_name = "qosDot1PClass"
   content = {
     from      = each.value.dot1p_from
-    prio      = each.value.priority == null ? "level3" : each.value.priority
-    target    = each.value.dscp_target == null ? "unspecified" : each.value.dscp_target
-    targetCos = each.value.cos_target == null ? "unspecified" : each.value.cos_target
+    prio      = each.value.priority
+    target    = each.value.dscp_target
+    targetCos = each.value.cos_target
     to        = each.value.dot1p_to
   }
 }

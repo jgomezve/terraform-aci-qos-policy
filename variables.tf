@@ -40,9 +40,9 @@ variable "dscp_priority_maps" {
   type = list(object({
     dscp_from   = string
     dscp_to     = string
-    priority    = optional(string)
-    dscp_target = optional(string)
-    cos_target  = optional(string)
+    priority    = optional(string, "level3")
+    dscp_target = optional(string, "unspecified")
+    cos_target  = optional(string, "unspecified")
   }))
   default = []
 
@@ -86,9 +86,9 @@ variable "dot1p_classifiers" {
   type = list(object({
     dot1p_from  = string
     dot1p_to    = string
-    priority    = optional(string)
-    dscp_target = optional(string)
-    cos_target  = optional(string)
+    priority    = optional(string, "level3")
+    dscp_target = optional(string, "unspecified")
+    cos_target  = optional(string, "unspecified")
   }))
   default = []
 
