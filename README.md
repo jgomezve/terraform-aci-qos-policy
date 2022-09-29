@@ -61,8 +61,8 @@ module "aci_qos_policy" {
 | <a name="input_alias"></a> [alias](#input\_alias) | QoS Policy alias. | `string` | `""` | no |
 | <a name="input_description"></a> [description](#input\_description) | QoS Policy description. | `string` | `""` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | QoS Custom Policy's Tenant name | `string` | n/a | yes |
-| <a name="input_dscp_priority_maps"></a> [dscp\_priority\_maps](#input\_dscp\_priority\_maps) | QoS Policy DSCP Priority Maps. | <pre>list(object({<br>    dscp_from   = string<br>    dscp_to     = string<br>    priority    = optional(string)<br>    dscp_target = optional(string)<br>    cos_target  = optional(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_dot1p_classifiers"></a> [dot1p\_classifiers](#input\_dot1p\_classifiers) | QoS Policy DSCP Priority Maps. | <pre>list(object({<br>    dot1p_from  = string<br>    dot1p_to    = string<br>    priority    = optional(string)<br>    dscp_target = optional(string)<br>    cos_target  = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_dscp_priority_maps"></a> [dscp\_priority\_maps](#input\_dscp\_priority\_maps) | QoS Policy DSCP Priority Maps. | <pre>list(object({<br>    dscp_from   = string<br>    dscp_to     = string<br>    priority    = optional(string, "level3")<br>    dscp_target = optional(string, "unspecified")<br>    cos_target  = optional(string, "unspecified")<br>  }))</pre> | `[]` | no |
+| <a name="input_dot1p_classifiers"></a> [dot1p\_classifiers](#input\_dot1p\_classifiers) | QoS Policy DSCP Priority Maps. | <pre>list(object({<br>    dot1p_from  = string<br>    dot1p_to    = string<br>    priority    = optional(string, "level3")<br>    dscp_target = optional(string, "unspecified")<br>    cos_target  = optional(string, "unspecified")<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
