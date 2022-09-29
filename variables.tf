@@ -94,14 +94,14 @@ variable "dot1p_classifiers" {
 
   validation {
     condition = alltrue([
-      for dot1p in var.dot1p_classifiers : dot1p.dot1p_from == null || try(dot1p.dot1p_from >= 0 && dot1p.dot1p_from <= 7, false) || dot1p.dot1p_from == "unspecified" 
+      for dot1p in var.dot1p_classifiers : dot1p.dot1p_from == null || try(dot1p.dot1p_from >= 0 && dot1p.dot1p_from <= 7, false) || dot1p.dot1p_from == "unspecified"
     ])
     error_message = "`dot1p_from`: Minimum value: `0`. Maximum value: `7`."
   }
 
   validation {
     condition = alltrue([
-      for dot1p in var.dot1p_classifiers : dot1p.dot1p_to == null || try(dot1p.dot1p_to >= 0 && dot1p.dot1p_to <= 7, false) || dot1p.dot1p_to == "unspecified" 
+      for dot1p in var.dot1p_classifiers : dot1p.dot1p_to == null || try(dot1p.dot1p_to >= 0 && dot1p.dot1p_to <= 7, false) || dot1p.dot1p_to == "unspecified"
     ])
     error_message = "`dot1p_to`: Minimum value: `0`. Maximum value: `7`."
   }
