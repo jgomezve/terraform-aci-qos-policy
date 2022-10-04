@@ -36,7 +36,7 @@ variable "tenant" {
 }
 
 variable "dscp_priority_maps" {
-  description = "QoS Policy DSCP Priority Maps."
+  description = "QoS Policy DSCP Priority Maps. Allowed values `dscp_from`, `dscp_to` and `dscp_target` : `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`. Allowed values `priority`: `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or `level6`. Allowed values `cos_target`: 0-7"
   type = list(object({
     dscp_from   = string
     dscp_to     = string
@@ -82,7 +82,7 @@ variable "dscp_priority_maps" {
 }
 
 variable "dot1p_classifiers" {
-  description = "QoS Policy DSCP Priority Maps."
+  description = "QoS Policy DSCP Priority Maps. Allowed values `dot1p_from`, `dot1p_to` and `cos_target`: 0-7. Allowed values `dscp_target` : `unspecified`, `CS0`, `CS1`, `AF11`, `AF12`, `AF13`, `CS2`, `AF21`, `AF22`, `AF23`, `CS4`, `AF41`, `AF42`, `AF43`, `CS5`, `VA`, `EF`, `CS6` or `CS7`. Allowed values `priority`: `unspecified`, `level1`, `level2`, `level3`, `level4`, `level5` or `level6`."
   type = list(object({
     dot1p_from  = string
     dot1p_to    = string
