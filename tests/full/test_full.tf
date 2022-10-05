@@ -12,10 +12,15 @@ terraform {
   }
 }
 
+resource "aci_rest_managed" "fvTenant" {
+  dn         = "uni/tn-TF"
+  class_name = "fvTenant"
+}
+
 module "main" {
   source      = "../.."
   name        = "FULL_POL"
-  tenant      = "TEN1"
+  tenant      = aci_rest_managed.fvTenant.content.name
   description = "My Custom Policy"
   alias       = "MyAlias"
   dscp_priority_maps = [
@@ -39,7 +44,7 @@ module "main" {
 }
 
 data "aci_rest_managed" "qosCustomPol" {
-  dn = "uni/tn-TEN1/qoscustom-FULL_POL"
+  dn = "uni/tn-${aci_rest_managed.fvTenant.content.name}/qoscustom-FULL_POL"
 
   depends_on = [module.main]
 }
