@@ -1,3 +1,7 @@
+## 0.1.3 (unreleased)
+
+- Fix resource dependencies
+
 ## 0.1.2
 
 - Fix DSCP value validation
